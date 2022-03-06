@@ -5,4 +5,6 @@ module com.example.filmai {
 
     opens com.example.filmai to javafx.fxml;
     exports com.example.filmai;
+    exports com.example.filmai.controller;
+    opens com.example.filmai.controller to javafx.fxml;
 }
