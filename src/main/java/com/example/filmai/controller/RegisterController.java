@@ -1,6 +1,9 @@
 package com.example.filmai.controller;
 
 import com.example.filmai.MainApplication;
+import com.example.filmai.model.User;
+import com.example.filmai.model.UserDAO;
+import com.example.filmai.utills.BcryptPassword;
 import com.example.filmai.utills.Validation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,6 +36,20 @@ public class RegisterController {
         String password=registerPassword.getText();
         String confirm=confirmPassword.getText();
 
+        if(Validation.isValidEmail(email2)&&Validation.isValidUsername(username)&&Validation.isValidPassword(password)&&Validation.isValidPassword(confirm)) {
+            String bcryptpassword=BcryptPassword.hashPassword(password);
+            User user= new User(username,bcryptpassword,email2);
+           // UserDAO.insert(user);
+            UserDAO.create(user);
+
+            Parent root = FXMLLoader.load(MainApplication.class.getResource("login-view.fxml"));
+            Stage registerStage = new Stage();
+            registerStage.setScene(new Scene(root, 600, 400));
+            registerStage.setTitle("Registracijos langas");
+            registerStage.show();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        }
+
         if(!Validation.isValidUsername(username)){
             registerStatus.setText("Neteisingas vardas");
         }
@@ -45,14 +62,6 @@ public class RegisterController {
 
         if (!Validation.isValidEmail(email2)){
             registerStatus.setText("Klaidingas email");
-        }
-        if(Validation.isValidEmail(email2)&&Validation.isValidUsername(username)&&Validation.isValidPassword(password)&&Validation.isValidPassword(confirm)) {
-            Parent root = FXMLLoader.load(MainApplication.class.getResource("login-view.fxml"));
-            Stage registerStage = new Stage();
-            registerStage.setScene(new Scene(root, 600, 400));
-            registerStage.setTitle("Registracijos langas");
-            registerStage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
         }
     }
 }
