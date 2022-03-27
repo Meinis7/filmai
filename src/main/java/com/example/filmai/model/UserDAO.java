@@ -16,10 +16,69 @@ public class UserDAO {
         session.save(user);
         session.getTransaction().commit();
     }*/
+   public static String searchByUsername(String name) {
+       //prisijungimai prie db
+       String jdbcUrl = "jdbc:mysql://localhost:3306/db";
+       String querry = "";
+
+       querry= "SELECT * FROM `users` WHERE username=?";
+
+       //vykdomi prisijungimai prie db ir atliekama/ivykdoma uzklausa
+       String username="";
+       try {
+           Connection connection = DriverManager.getConnection(jdbcUrl, "root", "");
+           //siekiant isvengti sql injekciju, kiekviena laukeli surasom i uzklausa atskirai-ignoruojami specialus simboliai
+           PreparedStatement preparedStatement = connection.prepareStatement(querry);
+
+           preparedStatement.setString(1,name);
+
+           ResultSet resultSet = preparedStatement.executeQuery();
+
+           while (resultSet.next()){
+               username=resultSet.getBoolean("admin")?"Administratorius":"Vartotojas";
+           }
+           preparedStatement.close();
+           connection.close();
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return username;
+
+   }
+    public static int searchByUsernameReturnId(String name) {
+        //prisijungimai prie db
+        String jdbcUrl = "jdbc:mysql://localhost:3306/db";
+        String querry = "";
+
+        querry= "SELECT id FROM `users` WHERE username=?";
+
+        //vykdomi prisijungimai prie db ir atliekama/ivykdoma uzklausa
+        int username=0;
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl, "root", "");
+            //siekiant isvengti sql injekciju, kiekviena laukeli surasom i uzklausa atskirai-ignoruojami specialus simboliai
+            PreparedStatement preparedStatement = connection.prepareStatement(querry);
+
+            preparedStatement.setString(1,name);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                username=resultSet.getInt("id");
+            }
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return username;
+
+    }
+
    public static void create(User user){
        //prisijungimai prie db
        String jdbcUrl = "jdbc:mysql://localhost:3306/db";
-       String querry = "INSERT INTO `users`(`username`, `password`, `email`) VALUES (?,?,?)";
+       String querry = "INSERT INTO `users`(`username`, `password`, `email`,admin) VALUES (?,?,?,?)";
        //vykdomi prisijungimai prie db ir atliekama/ivykdoma uzklausa
        try {
            Connection connection = DriverManager.getConnection(jdbcUrl,"root","");
@@ -28,6 +87,7 @@ public class UserDAO {
            preparedStatement.setString(1,user.getUsername());
            preparedStatement.setString(2,user.getPassword());
            preparedStatement.setString(3,user.getEmail());
+           preparedStatement.setBoolean(4,user.isAdministrator());
 
            //naujo sukurimui,esamo iraso redagavimui ir trinimui naudojame excuteUpdate metodda
            //esamo iraso paieskai naudojame querry metoda

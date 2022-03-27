@@ -13,7 +13,7 @@ public class MainApplication extends Application {
         //vaizdo sukurimas
         FXMLLoader loginView = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
        //sukurimas scenos is vaizdo
-        Scene scene = new Scene(loginView.load(), 500, 500);
+        Scene scene = new Scene(loginView.load(), 500, 400);
         //stage(langas) bus vienas, scenu gali buti daug
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setTitle("Prisijungimo langas");

@@ -2,6 +2,7 @@ package com.example.filmai.controller;
 
 import com.example.filmai.MainApplication;
 import com.example.filmai.model.UserDAO;
+import com.example.filmai.model.UserSingleton;
 import com.example.filmai.utills.BcryptPassword;
 import com.example.filmai.utills.Validation;
 import javafx.event.ActionEvent;
@@ -26,7 +27,7 @@ public class LoginController {
     private PasswordField password;
 
     @FXML
-    public void onLoginButtonClick() {
+    public void onLoginButtonClick(ActionEvent event) throws IOException {
         String username2=username.getText();
         String password2=password.getText();
         if(Validation.isValidUsername(username2)&&Validation.isValidPassword(password2)){
@@ -38,6 +39,11 @@ public class LoginController {
                 boolean isValidPassword= BcryptPassword.checkPassword(password2,passwordDB);
                 if(isValidPassword){
                     loginStatus.setText("Teissingai ivesti prisijungimo duomenys db");
+
+                    UserSingleton userSingleton=UserSingleton.getInstance();
+                    userSingleton.setUsername(username2);
+
+                    ifCorrectLogin(event);
                 }else {
                     loginStatus.setText("blogas slaptazodis");
                 }
@@ -61,5 +67,19 @@ public class LoginController {
         registerStage.show();
         //kodas reikalingas paslepti pries tai buvusi langa
         ((Node) (event.getSource())).getScene().getWindow().hide();
+    }
+    @FXML
+    public void ifCorrectLogin(ActionEvent event) throws IOException {
+        //vaizdo sukurimas
+        Parent root = FXMLLoader.load(MainApplication.class.getResource("dashboard-view.fxml"));
+        Stage registerStage=new Stage();
+        //stage(langas) bus vienas, scenu gali buti daug
+        registerStage.setScene(new Scene(root,800,550));
+        registerStage.setTitle("Registracijos langas");
+        //parodymas lango
+        registerStage.show();
+        //kodas reikalingas paslepti pries tai buvusi langa
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+
     }
 }

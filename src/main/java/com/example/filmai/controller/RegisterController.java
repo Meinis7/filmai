@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -29,6 +30,8 @@ public class RegisterController {
     private PasswordField registerPassword;
     @FXML
     private PasswordField confirmPassword;
+    @FXML
+    private CheckBox isAdmin;
 
     public void onRegisterButton(ActionEvent event) throws IOException {
         String username=registerUsername.getText();
@@ -38,7 +41,10 @@ public class RegisterController {
 
         if(Validation.isValidEmail(email2)&&Validation.isValidUsername(username)&&Validation.isValidPassword(password)&&Validation.isValidPassword(confirm)) {
             String bcryptpassword=BcryptPassword.hashPassword(password);
-            User user= new User(username,bcryptpassword,email2);
+
+            boolean adminas=isAdmin.isSelected();
+
+            User user= new User(username,bcryptpassword,email2,adminas);
            // UserDAO.insert(user);
             UserDAO.create(user);
 

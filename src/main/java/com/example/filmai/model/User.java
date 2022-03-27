@@ -19,6 +19,8 @@ public class User {
     //@Column(name = "email")
     private String email;
 
+    private boolean isAdministrator;
+
     public User() {
     }
 
@@ -29,10 +31,19 @@ public class User {
         this.email = email;
     }
 
-    public User(String username, String password, String email) {
+    public User(String username, String password, String email, boolean isAdministrator) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.isAdministrator=isAdministrator;
+    }
+
+    public boolean isAdministrator() {
+        return isAdministrator;
+    }
+
+    public void setAdministrator(boolean administrator) {
+        isAdministrator = administrator;
     }
 
     public int getId() {
@@ -69,11 +80,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "Register{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", isAdministrator=" + isAdministrator +
                 '}';
     }
 }

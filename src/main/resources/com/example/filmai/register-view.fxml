@@ -28,7 +28,9 @@
             <PasswordField fx:id="registerPassword" layoutX="226.0" layoutY="155.0" />
             <PasswordField fx:id="confirmPassword" layoutX="226.0" layoutY="196.0" />
             <Label fx:id="registerStatus" layoutX="286.0" layoutY="296.0" text="" />
-            <Button layoutX="224.0" layoutY="334.0" mnemonicParsing="false" prefHeight="35.0"  onAction="#onRegisterButton"  prefWidth="155.0" text="Register" />
+            <Button layoutX="224.0" layoutY="334.0" mnemonicParsing="false" onAction="#onRegisterButton" prefHeight="35.0" prefWidth="155.0" text="Register" />
+            <CheckBox fx:id="isAdmin" layoutX="224.0" layoutY="279.0" mnemonicParsing="false" />
+            <Label layoutX="89.0" layoutY="279.0" prefHeight="17.0" prefWidth="96.0" text="Administratorius?" />
          </children></Pane>
    </children>
 </GridPane>
